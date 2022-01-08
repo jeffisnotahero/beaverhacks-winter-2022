@@ -1,58 +1,48 @@
+from dotenv.main import dotenv_values
 from flask import Flask
-from flask_restful import Resource, Api
+from flask_restful import Resource, Api, abort
 
-import requests
+from helper import request_api_data, filter_actuals_data
 
 app = Flask(__name__)
 api = Api(app)
 
-def request_api_data():
-    data = requests.get("https://api.covidactnow.org/v2/states.json?apiKey=")
-    json = data.json()
-    return json
-
-def filter_actuals_data(json):
-    actuals_data = {}
-    for index, entry in enumerate(json):
-            actuals_data[index] = {entry["state"]: 
-            {"actuals": 
-                {
-                    "cases": entry["actuals"]["cases"],
-                    "deaths": entry["actuals"]["deaths"],
-                    "positiveTests": entry["actuals"]["positiveTests"],
-                    "negativeTests": entry["actuals"]["negativeTests"],
-                    "contactTracers": entry["actuals"]["contactTracers"],
-                    "hospitalBedsCapacity": entry["actuals"]["hospitalBeds"]["capacity"],
-                    "hospitalBedsCurrentUsageTotal": entry["actuals"]["hospitalBeds"]["currentUsageTotal"],
-                    "hospitalBedsCurrentUsageCovid": entry["actuals"]["hospitalBeds"]["currentUsageCovid"],
-                    "icuBedsCapacity": entry["actuals"]["icuBeds"]["capacity"],
-                    "icuBedsCurrentUsageTotal": entry["actuals"]["icuBeds"]["currentUsageTotal"],
-                    "icuBedsCurrentUsageCovid": entry["actuals"]["icuBeds"]["currentUsageCovid"],
-                    "newCases": entry["actuals"]["newCases"],
-                    "newDeaths": entry["actuals"]["newDeaths"],
-                    "vaccinesDistributed": entry["actuals"]["vaccinesDistributed"],
-                    "vaccinationsInitiated": entry["actuals"]["vaccinationsInitiated"],
-                    "vaccinationsCompleted": entry["actuals"]["vaccinationsCompleted"],
-                    "vaccinesAdministered": entry["actuals"]["vaccinesAdministered"],
-                    "vaccinesAdministeredDemographics": entry["actuals"]["vaccinesAdministeredDemographics"],
-                    "vaccinationsInitiatedDemographics": entry["actuals"]["vaccinationsInitiatedDemographics"]
-                }}}
-                
-    return actuals_data
-
 json = request_api_data()
 actuals_data = filter_actuals_data(json)
 
-class HelloWorld(Resource):
+class Homepage(Resource):
+    """
+    API endpoint for homepage.
+    """
     def get(self):
-        return actuals_data
+        """
+        GET method.
+        """
+        return {'hello': 'world'}, 200
 
-api.add_resource(HelloWorld, '/')
+api.add_resource(Homepage, '/')
+
+class ActualsData(Resource):
+    """
+    API endpoint for "actuals" data.
+    """
+    def get(self):
+        """
+        GET method.
+        Returns "actual" data in json format, if requested data is valid. 
+        Returns status code, 400, otherwise.
+        """
+        if not actuals_data:
+            abort(400, message="Invalid request")
+        else:
+            return actuals_data, 200
+
+api.add_resource(ActualsData, '/get_actuals_data/')
 
 if __name__ == '__main__':
     app.run(debug=True)
 
-# Environment variable
+# Environment variable (Done)
     # dotenv
 
 # Call external API (Done)
@@ -73,7 +63,7 @@ if __name__ == '__main__':
             # Metrics
             # lastUpdatedDate
 
-    # 2 Drop down list, Actuals (Jeff)
+    # 2 Drop down list, Actuals (Jeff) (Done)
         # State
             # Actuals
                 # Make HospitalBeds and icuBeds be list
@@ -84,7 +74,7 @@ if __name__ == '__main__':
 
     # General profile   (Greg)
 
-    # Actuals selection (Jeff)
+    # Actuals selection (Jeff) (Done)
 
 # Deploy
     # Heroku
