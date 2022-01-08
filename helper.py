@@ -29,8 +29,7 @@ def filter_actuals_data(json):
     
     actuals_data = {}
     for index, entry in enumerate(json):
-            actuals_data[index] = {entry["state"]: 
-            {"actuals": 
+            actuals_data[entry["state"]] = {"actuals": 
                 {
                     "cases": entry["actuals"]["cases"],
                     "deaths": entry["actuals"]["deaths"],
@@ -51,6 +50,6 @@ def filter_actuals_data(json):
                     "vaccinesAdministered": entry["actuals"]["vaccinesAdministered"],
                     "vaccinesAdministeredDemographics": entry["actuals"]["vaccinesAdministeredDemographics"],
                     "vaccinationsInitiatedDemographics": entry["actuals"]["vaccinationsInitiatedDemographics"]
-                }}}
+                }}
                 
     return actuals_data
