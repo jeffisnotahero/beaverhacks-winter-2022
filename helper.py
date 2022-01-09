@@ -28,7 +28,7 @@ def filter_actuals_data(json):
         return None
     
     actuals_data = {}
-    for index, entry in enumerate(json):
+    for entry in json:
             actuals_data[entry["state"]] = {"actuals": 
                 {
                     "cases": entry["actuals"]["cases"],
