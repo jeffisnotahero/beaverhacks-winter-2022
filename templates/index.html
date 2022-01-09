@@ -1,0 +1,35 @@
+{% extends "layout.html" %}
+
+{% block main %}
+
+    <div>
+        <p>Main</p>
+
+        <select name="state" id="state-dropdown-list" class="dropdown">
+        </select>
+
+        <select name="actuals-1" id="actuals-dropdown-list-1" class="dropdown">
+        </select>
+   
+        <span id="actuals-dropdown-list-amount-1"></span>    
+   
+        <select name="actuals-2" id="actuals-dropdown-list-2" class="dropdown">
+        </select>
+
+        <span id="actuals-dropdown-list-amount-2"></span>
+
+        <button id='generate-graph-button'>Generate Doughnut chart</button>
+        <button id='clear-graph-button'>Clear Doughnut chart</button>
+        <button id='download-graph-button'>Download Doughnut chart</button>
+
+        <a id='download-link'></a>
+
+    </div>
+
+    <div id="chart-div">
+        <canvas id="myChart"></canvas>
+    </div>
+    
+    <script type="text/javascript" src="static/graph.js"></script>
+
+{% endblock %} 

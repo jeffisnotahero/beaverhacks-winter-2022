@@ -48,8 +48,35 @@ def filter_actuals_data(json):
                     "vaccinationsInitiated": entry["actuals"]["vaccinationsInitiated"],
                     "vaccinationsCompleted": entry["actuals"]["vaccinationsCompleted"],
                     "vaccinesAdministered": entry["actuals"]["vaccinesAdministered"],
-                    "vaccinesAdministeredDemographics": entry["actuals"]["vaccinesAdministeredDemographics"],
-                    "vaccinationsInitiatedDemographics": entry["actuals"]["vaccinationsInitiatedDemographics"]
+                    # "vaccinesAdministeredDemographics": entry["actuals"]["vaccinesAdministeredDemographics"],
+                    # "vaccinationsInitiatedDemographics": entry["actuals"]["vaccinationsInitiatedDemographics"]
                 }}
                 
     return actuals_data
+
+
+def filter_state_entry(actuals_data):
+    if not actuals_data:
+        return None
+
+    state_entry = {"data": {}}
+    state_list = []
+    for key in actuals_data.keys():
+        state_list.append(key)
+
+    state_entry["data"] = state_list
+    return state_entry
+
+def filter_actuals_entry(actuals_data):
+    if not actuals_data:
+        return None
+
+    actuals_entry = {"data": {}}
+    actuals_list = []
+    
+    actuals_dictionary = actuals_data["AK"]["actuals"]
+    for key in actuals_dictionary.keys():
+        actuals_list.append(key)
+
+    actuals_entry["data"] = actuals_list
+    return actuals_entry
